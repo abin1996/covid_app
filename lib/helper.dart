@@ -1,8 +1,16 @@
 import 'package:intl/intl.dart';
 
 class Helper {
-  static String formatNumber(int number) {
-    final NumberFormat numberFormatter = new NumberFormat("##,##,##,##,##,###");
+  static String formatNumber(int number, {bool internationalFormat = false}) {
+    NumberFormat numberFormatter;
+    if (internationalFormat) {
+      numberFormatter =
+          new NumberFormat("###,###,###,###,###,###");
+    } else {
+      numberFormatter =
+          new NumberFormat("##,##,##,##,##,###");
+    }
+
     return numberFormatter.format(number);
   }
 

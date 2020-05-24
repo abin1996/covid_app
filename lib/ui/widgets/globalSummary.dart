@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:covid_app/model/indiaData.dart';
+import 'package:covid_app/model/globalTotalData.dart';
 import 'package:covid_app/ui/widgets/stateSummaryCard.dart';
-
-class TotalIndiaSummary extends StatelessWidget {
-  final IndiaData totalIndiaData;
-  const TotalIndiaSummary({Key key, @required this.totalIndiaData}) : super(key: key);
+class TotalGlobalSummary extends StatelessWidget {
+  final GlobalTotalData totalGlobalData;
+  const TotalGlobalSummary({Key key, @required this.totalGlobalData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,18 +18,18 @@ class TotalIndiaSummary extends StatelessWidget {
               Expanded(
                 child: StateSummaryCard(
                   cardColor: Colors.blueAccent,
-                  totalValue: totalIndiaData.totalConfirmed,
-                  changeValue: totalIndiaData.deltaIndia.deltaConfirmed,
-                  numberFormatInternational: false,
+                  totalValue: totalGlobalData.totalConfirmed,
+                  changeValue: totalGlobalData.newConfirmed,
+                  numberFormatInternational: true,
                   name: "Confirmed",
                 ),
               ),
               Expanded(
                 child: StateSummaryCard(
                   cardColor: Colors.amberAccent[700],
-                  totalValue: totalIndiaData.totalActive,
-                  changeValue: totalIndiaData.deltaIndia.deltaActive,
-                  numberFormatInternational: false,
+                  totalValue: totalGlobalData.totalActive,
+                  changeValue: totalGlobalData.newActive,
+                  numberFormatInternational: true,
                   name: "Active",
                 ),
               ),
@@ -41,18 +40,18 @@ class TotalIndiaSummary extends StatelessWidget {
               Expanded(
                 child: StateSummaryCard(
                   cardColor: Colors.green,
-                  totalValue: totalIndiaData.totalRecovered,
-                  changeValue: totalIndiaData.deltaIndia.deltaRecovered,
-                  numberFormatInternational: false,
+                  totalValue: totalGlobalData.totalRecovered,
+                  changeValue: totalGlobalData.newRecovered,
+                  numberFormatInternational: true,
                   name: "Recovered",
                   ),
                 ),
               Expanded(
                 child: StateSummaryCard(
                   cardColor: Colors.redAccent,
-                  totalValue: totalIndiaData.totalDeceased,
-                  changeValue: totalIndiaData.deltaIndia.deltaDeceased,
-                  numberFormatInternational: false,
+                  totalValue: totalGlobalData.totalDeaths,
+                  changeValue: totalGlobalData.newDeaths,
+                  numberFormatInternational: true,
                   name: "Deaths",
                 ),
               ),

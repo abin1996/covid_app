@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:covid_app/model/indiaData.dart';
 import 'package:covid_app/service/api.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:covid_app/ui/widgets/indiaSummaryCard.dart';
 import 'package:covid_app/ui/widgets/stateTable.dart';
@@ -35,7 +34,9 @@ class India extends StatelessWidget {
             return Text("${snapshot.error}");
           }
           // By default, show a loading spinner.
-          return CircularProgressIndicator();
+          return SizedBox(
+            width: 200,
+            child: LinearProgressIndicator());
         },
       ),
     );

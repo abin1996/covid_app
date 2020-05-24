@@ -3,6 +3,7 @@ import 'package:covid_app/model/bahData.dart';
 import 'package:covid_app/service/api.dart';
 import 'package:covid_app/ui/pages/bahrain.dart';
 import 'package:covid_app/ui/pages/india.dart';
+import 'package:covid_app/ui/pages/global.dart';
 
 void main() => runApp(
       MaterialApp(
@@ -19,17 +20,20 @@ class CovidData extends StatefulWidget {
 }
 
 class CovidDataState extends State<CovidData> {
-  Future<CovidIndiaData> futureData;
-  Future<BahrainData> futureBahrainData;
+  Future<CovidIndiaData> _futureIndiaData;
+  Future<BahrainData> _futureBahrainData;
+  Future<CovidGlobalData> _futureGlobalData;
   int _currentIndex = 0;
   List<Widget> _children = [];
   @override
   void initState() {
     super.initState();
-    futureData = fetchCovidData();
-    _children.add(India(futureData: futureData));
-    futureBahrainData = fetchBahrainCovidData();
-    _children.add(Bahrain(futureData: futureBahrainData));
+    _futureIndiaData = fetchCovidData();
+    _children.add(India(futureData: _futureIndiaData));
+    _futureBahrainData = fetchBahrainCovidData();
+    _children.add(Bahrain(futureData: _futureBahrainData));
+    _futureGlobalData = fetchGlobalCovidData();
+    _children.add(Global(futureData: _futureGlobalData));
   }
 
   @override
@@ -41,7 +45,7 @@ class CovidDataState extends State<CovidData> {
           appBar: AppBar(
             backgroundColor: Color.fromRGBO(58, 66, 86, 0.2),
             title: Text(
-              "COVID Status",
+              "COVID-19 Status",
               style: TextStyle(color: Colors.white70),
             ),
           ),
@@ -59,6 +63,10 @@ class CovidDataState extends State<CovidData> {
                 BottomNavigationBarItem(
                   icon: new Icon(Icons.flight_takeoff),
                   title: new Text('Bahrain'),
+                ),
+                BottomNavigationBarItem(
+                  icon: new Icon(Icons.public),
+                  title: new Text('Global'),
                 ),
               ]),
           body: _children[_currentIndex]),

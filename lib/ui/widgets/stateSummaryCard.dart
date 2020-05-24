@@ -7,12 +7,14 @@ class StateSummaryCard extends StatelessWidget {
   final int totalValue;
   final int changeValue;
   final String name;
+  final numberFormatInternational;
   const StateSummaryCard({
     Key key,
     @required this.cardColor,
     @required this.totalValue,
     @required this.name,
     @required this.changeValue,
+              this.numberFormatInternational
   }) : super(key: key);
 
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class StateSummaryCard extends StatelessWidget {
                 height: 4.0,
               ),
               AutoSizeText(
-                "[ +" + Helper.formatNumber(changeValue) + " ]",
+                "[ +" + Helper.formatNumber(changeValue, internationalFormat: numberFormatInternational) + " ]",
                 style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w900,
@@ -59,7 +61,7 @@ class StateSummaryCard extends StatelessWidget {
                 height: 4.0,
               ),
               AutoSizeText(
-                Helper.formatNumber(totalValue),
+                Helper.formatNumber(totalValue, internationalFormat: numberFormatInternational),
                 style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w900,

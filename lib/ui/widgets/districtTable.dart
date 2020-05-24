@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:covid_app/model/stateDistrictData.dart';
+import 'package:covid_app/helper.dart';
 
 class DistrictTable extends StatelessWidget {
   final StateData stateData;
@@ -14,9 +15,17 @@ class DistrictTable extends StatelessWidget {
       child: Column(
         children: <Widget>[
           buildTableHeaderRow(),
-          Column(
-            children: buildTable(),
-          ),
+          // Column(
+          //   children: buildTable(),
+          // ),
+          ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: stateData.districtData.length,
+              itemBuilder: (context, index) {
+                return buildTableRow(index, stateData.districtData[index]);
+              }),
         ],
       ),
     );
@@ -78,7 +87,7 @@ class DistrictTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        districtData.confirmed.toString(),
+                        Helper.formatNumber(districtData.confirmed, internationalFormat: false),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -102,7 +111,7 @@ class DistrictTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        districtData.active.toString(),
+                        Helper.formatNumber(districtData.active, internationalFormat: false),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -126,7 +135,7 @@ class DistrictTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        districtData.recovered.toString(),
+                        Helper.formatNumber(districtData.recovered, internationalFormat: false),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -150,7 +159,7 @@ class DistrictTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        districtData.deceased.toString(),
+                        Helper.formatNumber(districtData.deceased, internationalFormat: false),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -277,7 +286,7 @@ class DistrictTable extends StatelessWidget {
             Expanded(
               flex: 10,
               child: Tooltip(
-                message: "Deceased",
+                message: "Deaths",
                 child: Container(
                   margin: EdgeInsets.only(right: 1),
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
