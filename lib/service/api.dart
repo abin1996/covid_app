@@ -9,6 +9,7 @@ import 'package:covid_app/model/globalCountryData.dart';
 import 'package:logger/logger.dart';
 
 final logger = Logger();
+
 class CovidIndiaData {
   final List<StateData> stateData;
   CovidIndiaData({this.stateData});
@@ -73,9 +74,10 @@ class CovidGlobalData {
     var allCountryData = json['Countries'];
     var totalSummaryJson = json['Global'];
     for (var i = 0; i < allCountryData.length; i++) {
-      if(allCountryData[i]['TotalConfirmed']>1000){
-        tempGlobalCountryData.add(GlobalCountryData.fromJson(allCountryData[i]));
-      }      
+      if (allCountryData[i]['TotalConfirmed'] > 1000) {
+        tempGlobalCountryData
+            .add(GlobalCountryData.fromJson(allCountryData[i]));
+      }
     }
     tempGlobalCountryData
         .sort((b, a) => a.totalConfirmed.compareTo(b.totalConfirmed));
@@ -87,12 +89,11 @@ class CovidGlobalData {
 }
 
 Future<CovidGlobalData> fetchGlobalCovidData() async {
-  final response = await http.get('https://api.covid19api.com/summary'); 
+  final response = await http.get('https://api.covid19api.com/summary');
   if (response.statusCode == 200) {
     logger.i("Fetched Global data");
     var decodedResponseBody = json.decode(response.body);
     return CovidGlobalData.fromJson(decodedResponseBody);
-  } else {
-    throw Error();
   }
+  return Future.error("Failed to fetch Global Data");
 }
