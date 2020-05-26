@@ -1,8 +1,10 @@
-import 'package:covid_app/models/stateCovidData.dart';
 import 'package:flutter/material.dart';
-
+import 'package:covid_app/model/indiaData.dart';
+import 'package:covid_app/model/stateDistrictData.dart';
+import 'package:covid_app/ui/widgets/stateDetailCard.dart';
+import 'package:flutter/cupertino.dart';
 class StateTable extends StatelessWidget {
-  final List<StateCovidData> indiaData;
+  final IndiaData indiaData;
   const StateTable({Key key, @required this.indiaData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -23,28 +25,24 @@ class StateTable extends StatelessWidget {
   }
 
   List<Widget> buildTable(BuildContext context) {
-    return List<Widget>.generate(indiaData.length, (index) {
-      if (indiaData[index].stateName == "Total" || indiaData[index].stateName == "State Unassigned") {
-        return Container();
-      }
-      return buildTableRow(context, index, indiaData[index]);
+    return List<Widget>.generate(indiaData.stateData.length, (index) {
+      return buildTableRow(context, index, indiaData.stateData[index]);
     });
   }
 
-  Widget buildTableRow(
-      BuildContext context, int index, StateCovidData stateData) {
+  Widget buildTableRow(BuildContext context, int index, StateData stateData) {
     return IntrinsicHeight(
       child: Padding(
-        padding: EdgeInsets.all(1.5),
+        padding: EdgeInsets.all(0.5),
         child: Material(
           type: MaterialType.transparency,
           child: InkWell(
-            //   onTap: () {
-            //     Navigator.push(context,
-            //         CupertinoPageRoute(
-            //            builder: (context) => StateDetails(stateData: stateData)),
-            // );
-            //   },
+            onTap: () {
+              Navigator.push(context,
+                  CupertinoPageRoute(                    
+                     builder: (context) => StateDetails(stateData: stateData)),
+          );
+            },
             borderRadius: BorderRadius.circular(4),
             splashColor: Colors.blueAccent.withOpacity(0.3),
             highlightColor: Colors.blueAccent.withOpacity(0.15),
@@ -65,11 +63,11 @@ class StateTable extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Hero(
                         flightShuttleBuilder: flightShuttleBuilder,
-                        tag: stateData.stateName.toString(),
+                        tag: stateData.state.toString(),
                         child: Material(
                           type: MaterialType.transparency,
                           child: Text(
-                            stateData.stateName,
+                            stateData.state,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
@@ -90,7 +88,7 @@ class StateTable extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
-                      color: Colors.blueAccent.withAlpha(10),
+                    color: Colors.blueAccent.withAlpha(10),
                     ),
                     child: Align(
                       alignment: Alignment.centerLeft,
@@ -167,7 +165,7 @@ class StateTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        stateData.totalDeaths.toString(),
+                        stateData.totalDeceased.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -179,9 +177,9 @@ class StateTable extends StatelessWidget {
                 ),
               ],
             ),
+            
           ),
-        ),
-      ),
+        ),),
     );
   }
 
@@ -321,14 +319,13 @@ class StateTable extends StatelessWidget {
       ),
     );
   }
-
   Widget flightShuttleBuilder(
     BuildContext flightContext,
     Animation<double> animation,
     HeroFlightDirection flightDirection,
     BuildContext fromHeroContext,
     BuildContext toHeroContext,
-  ) {
+    ) { 
     return DefaultTextStyle(
       style: DefaultTextStyle.of(toHeroContext).style,
       child: toHeroContext.widget,
