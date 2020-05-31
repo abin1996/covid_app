@@ -1,10 +1,10 @@
-import 'package:covid_app/models/stateCovidData.dart';
+import 'package:covid_app/models/globalCovidData.dart';
 import 'package:covid_app/ui/widgets/summaryCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-class IndiaSummary extends StatelessWidget {
-  final StateCovidData totalIndiaData;
-  const IndiaSummary({Key key, @required this.totalIndiaData}) : super(key: key);
+class GlobalSummary extends StatelessWidget {
+  final GlobalCovidData globalData;
+  const GlobalSummary({Key key, @required this.globalData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,21 +17,21 @@ class IndiaSummary extends StatelessWidget {
           SlideAnimation(
             horizontalOffset: 20,
             duration: Duration(milliseconds: 300),
-            child: Row(
+                      child: Row(
               children: <Widget>[
                 Expanded(
                   child: SummaryCard(
                     cardColor: Colors.blueAccent,
-                    totalValue: totalIndiaData.totalConfirmed,
-                    changeValue: totalIndiaData.deltaConfirmed,
+                    totalValue: globalData.totalConfirmed,
+                    changeValue: null,
                     name: "Confirmed",
                   ),
                 ),
                 Expanded(
                   child: SummaryCard(
                     cardColor: Colors.amberAccent[700],
-                    totalValue: totalIndiaData.totalActive,
-                    changeValue: totalIndiaData.deltaActive,
+                    totalValue: globalData.totalActive,
+                    changeValue: null,
                     name: "Active",
                   ),
                 ),
@@ -39,23 +39,23 @@ class IndiaSummary extends StatelessWidget {
             ),
           ),
           SlideAnimation(
-            horizontalOffset: 30,
             duration: Duration(milliseconds: 400),
+            horizontalOffset: 30,
                       child: Row(
               children: <Widget>[
                 Expanded(
                   child: SummaryCard(
                     cardColor: Colors.green,
-                    totalValue: totalIndiaData.totalRecovered,
-                    changeValue: totalIndiaData.deltaRecovered,
+                    totalValue: globalData.totalRecovered,
+                    changeValue: null,
                     name: "Recovered",
-                    ),
                   ),
+                ),
                 Expanded(
                   child: SummaryCard(
                     cardColor: Colors.redAccent,
-                    totalValue: totalIndiaData.totalDeaths,
-                    changeValue: totalIndiaData.deltaDeaths,
+                    totalValue: globalData.totalDeaths,
+                    changeValue: null,
                     name: "Deaths",
                   ),
                 ),

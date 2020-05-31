@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:covid_app/bloc/blocs.dart';
 import 'package:covid_app/models/stateCovidData.dart';
 import 'package:covid_app/repository/repository.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +22,23 @@ class CovidIndiaBloc extends Bloc<CovidIndiaEvent, CovidIndiaState> {
   ) async* {
     if (event is FetchCovidData) {
       yield CovidIndiaLoading();
-      try{
-        final List<StateCovidData> stateCovidData = await covidDataRepository.getStateCovidData();
+      try {
+        final List<StateCovidData> stateCovidData =
+            await covidDataRepository.getStateCovidData();
         yield CovidIndiaLoaded(stateCovidData: stateCovidData);
-      }catch(error){
+      } catch (error) {
         yield CovidIndiaError();
       }
-
+    }
+    if (event is RefreshCovidData) {
+      yield CovidIndiaLoading();
+      try {
+        final List<StateCovidData> stateCovidData =
+            await covidDataRepository.getStateCovidData();
+        yield CovidIndiaLoaded(stateCovidData: stateCovidData);
+      } catch (error) {
+        yield CovidIndiaError();
+      }
     }
   }
 }

@@ -28,7 +28,8 @@ dependencies:
   auto_size_text: ^2.1.0
   liquid_pull_to_refresh: ^2.0.0
   simple_animations: ^2.1.1
-  flutter_staggered_animations: "^0.1.2"
+  flutter_staggered_animations: ^0.1.2
+  logger: ^0.6.0
   flutter:
     sdk: flutter
 

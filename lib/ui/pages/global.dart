@@ -1,39 +1,40 @@
 import 'package:covid_app/bloc/blocs.dart';
-import 'package:covid_app/models/stateCovidData.dart';
-import 'package:covid_app/ui/widgets/indiaSummary.dart';
+import 'package:covid_app/models/globalCovidData.dart';
+import 'package:covid_app/models/countriesCovidData.dart';
+import 'package:covid_app/ui/widgets/globalSummary.dart';
 import 'package:covid_app/ui/widgets/lastUpdated.dart';
-import 'package:covid_app/ui/widgets/stateTable.dart';
+import 'package:covid_app/ui/widgets/globalTable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class India extends StatefulWidget {
-  State<India> createState() => _IndiaState();
+class Global extends StatefulWidget {
+  State<Global> createState() => _GlobalState();
 }
 
-class _IndiaState extends State<India> {
-  Completer<void> _refreshCompleterIndia;
+class _GlobalState extends State<Global> {
+  Completer<void> _refreshCompleterGlobal;
 
   @override
   void initState() {
     super.initState();
-    _refreshCompleterIndia = Completer<void>();
+    _refreshCompleterGlobal = Completer<void>();
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Center(
-      child: BlocConsumer<CovidIndiaBloc, CovidIndiaState>(
+      child: BlocConsumer<CovidGlobalBloc, CovidGlobalState>(
           listener: (context, state) {
-        if (state is CovidIndiaLoaded) {
-          _refreshCompleterIndia?.complete();
-          _refreshCompleterIndia = Completer();
+        if (state is CovidGlobalLoaded) {
+          _refreshCompleterGlobal?.complete();
+          _refreshCompleterGlobal = Completer();
         }
       }, builder: (context, state) {
-        if (state is CovidIndiaInitial) {
-          BlocProvider.of<CovidIndiaBloc>(context).add(FetchCovidData());
+        if (state is CovidGlobalInitial) {
+          BlocProvider.of<CovidGlobalBloc>(context).add(FetchGlobalCovidData());
           return AnimationConfiguration.synchronized(
             child: FadeInAnimation(
               child: Center(
@@ -42,7 +43,7 @@ class _IndiaState extends State<India> {
             ),
           );
         }
-        if (state is CovidIndiaLoading) {
+        if (state is CovidGlobalLoading) {
           return AnimationConfiguration.synchronized(
             child: FadeInAnimation(
               child: Center(
@@ -51,26 +52,21 @@ class _IndiaState extends State<India> {
             ),
           );
         }
-        if (state is CovidIndiaLoaded) {
-          final List<StateCovidData> stateCovidData = state.stateCovidData;
-          StateCovidData totalIndiaData = new StateCovidData();
-          for (var i = 0; i < stateCovidData.length; i++) {
-            if (stateCovidData[i].stateName == "Total") {
-              totalIndiaData = stateCovidData[i];
-            }
-          }
+        if (state is CovidGlobalLoaded) {
+          final List<CountryCovidData> allCountriesCovidData =
+              state.countriesCovidData;
+          GlobalCovidData globalData = state.globalCovidData;
           return RefreshIndicator(
             onRefresh: () {
-              BlocProvider.of<CovidIndiaBloc>(context).add(
-                RefreshCovidData(),
+              BlocProvider.of<CovidGlobalBloc>(context).add(
+                RefreshGlobalCovidData(),
               );
-              return _refreshCompleterIndia.future;
+              return _refreshCompleterGlobal.future;
             },
             child: SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: new BoxConstraints(),
                 child: AnimationConfiguration.synchronized(
-                  duration: Duration(milliseconds: 100),
                   child: Column(
                     children: <Widget>[
                       SlideAnimation(
@@ -83,20 +79,24 @@ class _IndiaState extends State<India> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 8),
                                 child: LastUpdated(
-                                    dateTime: totalIndiaData.lastUpdated),
+                                    dateTime: globalData.lastUpdated),
                               )),
                         ),
                       ),
                       FadeInAnimation(
-                        child: IndiaSummary(
-                          totalIndiaData: totalIndiaData,
-                        ),
-                      ),
+                          child: GlobalSummary(globalData: globalData)),
                       SlideAnimation(
-                          verticalOffset: 50.0,
-                          duration: Duration(milliseconds: 350),
-                          child: FadeInAnimation(
-                              child: StateTable(indiaData: stateCovidData))),
+                        verticalOffset: 30,
+                        duration: Duration(milliseconds: 200),
+                        child: FadeInAnimation(
+                          child: CountriesTable(
+                              allCountriesCovidData: allCountriesCovidData),
+                        ),
+                      )
+                      // IndiaSummary(
+                      //   totalIndiaData: globalData,
+                      // ),
+                      // StateTable(indiaData: stateCovidData),
                     ],
                   ),
                 ),

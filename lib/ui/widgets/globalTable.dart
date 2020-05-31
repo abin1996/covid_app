@@ -1,10 +1,11 @@
 import 'package:covid_app/helper.dart';
-import 'package:covid_app/models/stateCovidData.dart';
+import 'package:covid_app/models/models.dart';
+import 'package:covid_app/models/countriesCovidData.dart';
 import 'package:flutter/material.dart';
 
-class StateTable extends StatelessWidget {
-  final List<StateCovidData> indiaData;
-  const StateTable({Key key, @required this.indiaData}) : super(key: key);
+class CountriesTable extends StatelessWidget {
+  final List<CountryCovidData> allCountriesCovidData;
+  const CountriesTable({Key key, @required this.allCountriesCovidData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,19 +25,20 @@ class StateTable extends StatelessWidget {
   }
 
   List<Widget> buildTable(BuildContext context) {
-    return List<Widget>.generate(indiaData.length, (index) {
-      if (indiaData[index].stateName == "Total" ) {
-        return Container();
-      }
-      return buildTableRow(context, index, indiaData[index]);
+    return List<Widget>.generate(allCountriesCovidData.length, (index) {
+      // if (allCountriesCovidData[index].stateName == "Total" || allCountriesCovidData[index].stateName == "State Unassigned") {
+      //   return Container();
+      // }
+
+      return buildTableRow(context, index, allCountriesCovidData[index]);
     });
   }
 
   Widget buildTableRow(
-      BuildContext context, int index, StateCovidData stateData) {
-    int alpha = 20;
+      BuildContext context, int index, CountryCovidData countryData) {
+    int alpha = 10;
     if (index % 2 == 0) {
-      alpha = 30;
+      alpha = 20;
     }
     return IntrinsicHeight(
       child: Padding(
@@ -47,7 +49,7 @@ class StateTable extends StatelessWidget {
             //   onTap: () {
             //     Navigator.push(context,
             //         CupertinoPageRoute(
-            //            builder: (context) => StateDetails(stateData: stateData)),
+            //            builder: (context) => StateDetails(countryData: countryData)),
             // );
             //   },
             borderRadius: BorderRadius.circular(4),
@@ -70,11 +72,11 @@ class StateTable extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Hero(
                         flightShuttleBuilder: flightShuttleBuilder,
-                        tag: stateData.stateName.toString(),
+                        tag: countryData.countryName.toString(),
                         child: Material(
                           type: MaterialType.transparency,
                           child: Text(
-                            stateData.stateName,
+                            countryData.countryName,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
@@ -100,7 +102,7 @@ class StateTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        Helper.formatNumber(stateData.totalConfirmed),
+                        Helper.formatNumber(countryData.totalConfirmed) ,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -124,7 +126,7 @@ class StateTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        Helper.formatNumber(stateData.totalActive),
+                        Helper.formatNumber(countryData.totalActive),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -148,7 +150,7 @@ class StateTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        Helper.formatNumber(stateData.totalRecovered),
+                        Helper.formatNumber(countryData.totalRecovered),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -172,7 +174,7 @@ class StateTable extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        Helper.formatNumber(stateData.totalDeaths),
+                        Helper.formatNumber(countryData.totalDeaths),
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -199,18 +201,18 @@ class StateTable extends StatelessWidget {
             Expanded(
               flex: 16,
               child: Tooltip(
-                message: "State",
+                message: "Country",
                 child: Container(
                   margin: EdgeInsets.only(right: 1),
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Colors.white.withAlpha(50),
+                    color: Colors.white.withAlpha(30),
                   ),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "State/UT",
+                      "Country",
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
@@ -230,7 +232,7 @@ class StateTable extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Colors.blueAccent.withAlpha(50),
+                    color: Colors.blueAccent.withAlpha(30),
                   ),
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -255,7 +257,7 @@ class StateTable extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Colors.amberAccent[700].withAlpha(50),
+                    color: Colors.amberAccent[700].withAlpha(30),
                   ),
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -280,7 +282,7 @@ class StateTable extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Colors.greenAccent[700].withAlpha(50),
+                    color: Colors.greenAccent[700].withAlpha(30),
                   ),
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -305,7 +307,7 @@ class StateTable extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Colors.redAccent.withAlpha(50),
+                    color: Colors.redAccent.withAlpha(25),
                   ),
                   child: Align(
                     alignment: Alignment.centerLeft,

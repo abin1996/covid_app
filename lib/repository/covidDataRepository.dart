@@ -12,4 +12,16 @@ class CovidDataRepository {
   Future<List<StateCovidData>> getStateCovidData() async {
     return covidDataApiClient.fetchStateCovidData();
   }
+
+  Future<BahrainCovidData> getBahrainCovidData() async {
+    return covidDataApiClient.fetchBahrainCovidData();
+  }
+
+  Future<List<CountryCovidData>> getAllCountriesCovidData() async {
+    return covidDataApiClient.fetchAllCountriesCovidData();
+  }
+
+  Future<GlobalCovidData> getGlobalCovidData() async {
+    return covidDataApiClient.fetchGlobalCovidData();
+  }
 }

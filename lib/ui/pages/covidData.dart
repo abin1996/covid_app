@@ -1,6 +1,7 @@
+import 'package:covid_app/ui/pages/bahrain.dart';
 import 'package:covid_app/ui/pages/india.dart';
+import 'package:covid_app/ui/pages/global.dart';
 import 'package:flutter/material.dart';
-
 class CovidData extends StatefulWidget {
   CovidDataState createState() => CovidDataState();
 }
@@ -12,6 +13,8 @@ class CovidDataState extends State<CovidData> {
   void initState() {
     super.initState();
     _children.add(India());
+    _children.add(Bahrain());
+    _children.add(Global());
     // futureBahrainData = fetchBahrainCovidData();
     // _children.add(Bahrain(futureData: futureBahrainData));
   }
@@ -21,16 +24,16 @@ class CovidDataState extends State<CovidData> {
     return Material(
       type: MaterialType.transparency,
       child: Scaffold(
-          backgroundColor: Color.fromRGBO(58, 66, 86, 0.0),
+          backgroundColor: Color.fromRGBO(58, 66, 86, 0.3),
           appBar: AppBar(
-            backgroundColor: Color.fromRGBO(58, 66, 86, 0.2),
+            backgroundColor: Color.fromRGBO(58, 66, 86, 0.4),
             title: Text(
               "COVID Status",
               style: TextStyle(color: Colors.white70),
             ),
           ),
           bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: Color.fromRGBO(58, 66, 86, 0.2),
+              backgroundColor: Color.fromRGBO(58, 66, 86, 0.4),
               unselectedItemColor: Colors.white60,
               selectedItemColor: Colors.deepPurpleAccent,
               currentIndex: _currentIndex,
@@ -43,6 +46,10 @@ class CovidDataState extends State<CovidData> {
                 BottomNavigationBarItem(
                   icon: new Icon(Icons.flight_takeoff),
                   title: new Text('Bahrain'),
+                ),
+                BottomNavigationBarItem(
+                  icon: new Icon(Icons.public),
+                  title: new Text('Global'),
                 ),
               ]),
           body: _children[_currentIndex]),

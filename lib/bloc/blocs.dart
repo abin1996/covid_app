@@ -1,3 +1,9 @@
 export 'covid_india_bloc.dart';
 export 'covid_india_event.dart';
 export 'covid_india_state.dart';
+export 'covid_bahrain_bloc.dart';
+export 'covid_bahrain_event.dart';
+export 'covid_bahrain_state.dart';
+export 'covid_global_bloc.dart';
+export 'covid_global_event.dart';
+export 'covid_global_state.dart';

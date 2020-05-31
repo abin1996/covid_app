@@ -9,3 +9,9 @@ class FetchCovidData extends CovidIndiaEvent {
   @override
   List<Object> get props => [];
 }
+
+class RefreshCovidData extends CovidIndiaEvent {
+  const RefreshCovidData();
+  @override
+  List<Object> get props => [];
+}
