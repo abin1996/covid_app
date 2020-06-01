@@ -17,18 +17,40 @@ class CovidDataApiClient {
     logger.i("Api call for India data - Response code: " +
         response.statusCode.toString());
     if (response.statusCode == 200) {
-      var decodedResponseBody = json.decode(response.body);
-      var stateData = decodedResponseBody['statewise'];
-      DateTime lastUpdated;
-      List<StateCovidData> statesCovidData = new List<StateCovidData>();
-      for (var i = 0; i < stateData.length; i++) {
-        if(stateData[i]['state']!="State Unassigned"){
-          lastUpdated = DateTime.now();
-          statesCovidData.add(StateCovidData.fromJson(stateData[i], lastUpdated));
+      final responseDistrict = await http
+          .get('https://api.covid19india.org/v2/state_district_wise.json');
+      logger.i("Api call for District data - Response code: " +
+        responseDistrict.statusCode.toString());
+      if (responseDistrict.statusCode == 200) {
+        var districtJson = json.decode(responseDistrict.body);
+        Map<String, List<DistrictData>> stateDistrictData = new Map();
+        for (var i = 0; i < districtJson.length; i++) {
+          var stateCode = districtJson[i]['statecode'];
+          List<DistrictData> districtData = new List<DistrictData>();
+          for (var j = 0; j < districtJson[i]['districtData'].length; j++) {
+            var district = districtJson[i]['districtData'][j];
+            districtData.add(DistrictData.fromJson(district));
+          }
+          districtData.sort((b, a) => a.confirmed.compareTo(b.confirmed));
+          stateDistrictData[stateCode] = districtData;
         }
-          
+        var decodedResponseBody = json.decode(response.body);
+        var stateData = decodedResponseBody['statewise'];
+        DateTime lastUpdated;
+        List<StateCovidData> statesCovidData = new List<StateCovidData>();
+        for (var i = 0; i < stateData.length; i++) {
+          if (stateData[i]['state'] != "State Unassigned") {
+            var stateCode = stateData[i]['statecode'];
+            var districtList = stateDistrictData[stateCode];
+            lastUpdated = DateTime.now();
+            statesCovidData.add(StateCovidData.fromJson(
+                stateData[i], lastUpdated, districtList));
+          }
+        }
+        return statesCovidData;
+      } else {
+        throw Future.error("Failed to fetch District Data");
       }
-      return statesCovidData;
     } else {
       throw Future.error("Failed to fetch India Data.");
     }
@@ -82,7 +104,8 @@ class CovidDataApiClient {
               .add(CountryCovidData.fromJson(countryData[i], lastUpdated));
         }
       }
-      allCountriesCovidData.sort((b,a) => a.totalConfirmed.compareTo(b.totalConfirmed));
+      allCountriesCovidData
+          .sort((b, a) => a.totalConfirmed.compareTo(b.totalConfirmed));
       return allCountriesCovidData;
     } else {
       throw Future.error("Failed to fetch All country Data.");

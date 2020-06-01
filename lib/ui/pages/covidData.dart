@@ -24,7 +24,7 @@ class CovidDataState extends State<CovidData> {
     return Material(
       type: MaterialType.transparency,
       child: Scaffold(
-          backgroundColor: Color.fromRGBO(58, 66, 86, 0.3),
+          backgroundColor: Colors.black45,
           appBar: AppBar(
             backgroundColor: Color.fromRGBO(58, 66, 86, 0.4),
             title: Text(

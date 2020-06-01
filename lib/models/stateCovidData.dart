@@ -1,3 +1,4 @@
+import 'package:covid_app/models/districtStateCovidData.dart';
 import 'package:equatable/equatable.dart';
 
 class StateCovidData extends Equatable {
@@ -11,7 +12,9 @@ class StateCovidData extends Equatable {
   final int deltaRecovered;
   final int deltaDeaths;
   final String stateName;
+  final String stateCode;
   final String notes;
+  final List<DistrictData> districtData;
 
   const StateCovidData(
       {this.lastUpdated,
@@ -24,11 +27,15 @@ class StateCovidData extends Equatable {
       this.deltaDeaths,
       this.deltaRecovered,
       this.notes,
-      this.stateName});
+      this.stateName,
+      this.stateCode,
+      this.districtData});
 
-  static StateCovidData fromJson(dynamic json, DateTime lastUpdated) {
-    int deltaActive =
-        int.parse(json['deltaconfirmed']) - int.parse(json['deltadeaths']) - int.parse(json['deltarecovered']);
+  static StateCovidData fromJson(
+      dynamic json, DateTime lastUpdated, List<DistrictData> districtData) {
+    int deltaActive = int.parse(json['deltaconfirmed']) -
+        int.parse(json['deltadeaths']) -
+        int.parse(json['deltarecovered']);
     return StateCovidData(
         lastUpdated: lastUpdated,
         totalActive: int.parse(json['active']),
@@ -40,7 +47,9 @@ class StateCovidData extends Equatable {
         deltaRecovered: int.parse(json['deltarecovered']),
         deltaActive: deltaActive,
         stateName: json['state'],
-        notes: json['statenotes']);
+        stateCode: json['statecode'],
+        notes: json['statenotes'],
+        districtData: districtData);
   }
 
   @override
@@ -54,6 +63,8 @@ class StateCovidData extends Equatable {
         deltaDeaths,
         deltaRecovered,
         stateName,
-        notes
+        notes,
+        districtData,
+        stateCode
       ];
 }

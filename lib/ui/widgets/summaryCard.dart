@@ -19,7 +19,7 @@ class SummaryCard extends StatelessWidget {
     String sign;
     if(changeValue!=null){
       if (changeValue < 0) {
-        sign = "-";
+        sign = "";
       } else {
         sign = "+";
       }

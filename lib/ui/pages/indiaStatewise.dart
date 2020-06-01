@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:covid_app/model/stateDistrictData.dart';
-import 'package:covid_app/ui/widgets/stateDetailPageHearder.dart';
-import 'package:covid_app/ui/widgets/stateSummaryCard.dart';
+import 'package:covid_app/models/stateCovidData.dart';
 import 'package:covid_app/ui/widgets/districtTable.dart';
+import 'package:covid_app/ui/widgets/statewisePageHeader.dart';
+import 'package:covid_app/ui/widgets/summaryCard.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class StateDetails extends StatelessWidget {
-  final StateData stateData;
-  const StateDetails({Key key, @required this.stateData}) : super(key: key);
+class StateWiseData extends StatelessWidget {
+  final StateCovidData stateData;
+  const StateWiseData({@required this.stateData});
   @override
   Widget build(BuildContext context) {
     return Material(         
@@ -18,7 +19,7 @@ class StateDetails extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                PageHeader(title: stateData.state.toString()),
+                StatewisePageHeader(title: stateData.stateName.toString()),
                 SizedBox(
                   height: 10,
                 ),
@@ -27,18 +28,18 @@ class StateDetails extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Expanded(
-                            child: StateSummaryCard(
+                            child: SummaryCard(
                               cardColor: Colors.blueAccent,
                               totalValue: stateData.totalConfirmed,
-                              changeValue: stateData.deltaState.deltaConfirmed,
+                              changeValue: stateData.deltaConfirmed,
                               name: "Confirmed",
                               ),
                             ),
                         Expanded(
-                          child: StateSummaryCard(
+                          child: SummaryCard(
                             cardColor: Colors.amberAccent[700],
                             totalValue: stateData.totalActive,
-                            changeValue: stateData.deltaState.deltaActive,
+                            changeValue: stateData.deltaActive,
                             name: "Active",
                           ),
                         ),
@@ -47,18 +48,18 @@ class StateDetails extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Expanded(
-                            child: StateSummaryCard(
+                            child: SummaryCard(
                               cardColor: Colors.green,
                               totalValue: stateData.totalRecovered,
-                              changeValue: stateData.deltaState.deltaRecovered,
+                              changeValue: stateData.deltaRecovered,
                               name: "Recovered",
                             ),
                         ),
                         Expanded(
-                          child: StateSummaryCard(
+                          child: SummaryCard(
                             cardColor: Colors.redAccent,
-                            totalValue: stateData.totalDeceased,
-                            changeValue: stateData.deltaState.deltaDeceased,
+                            totalValue: stateData.totalDeaths,
+                            changeValue: stateData.deltaDeaths,
                             name: "Deaths",
                           ),
                         ),
@@ -66,9 +67,7 @@ class StateDetails extends StatelessWidget {
                     ),
                   ],
                 ),
-                DistrictTable(
-                  stateData: stateData
-                ),
+                DistrictTable(districtData: stateData.districtData)
               ]
             ),
       ),

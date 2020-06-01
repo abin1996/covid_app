@@ -1,13 +1,11 @@
-import 'package:animations/animations.dart';
 import 'package:covid_app/helper.dart';
-import 'package:covid_app/models/stateCovidData.dart';
-import 'package:covid_app/ui/pages/indiaStatewise.dart';
+import 'package:covid_app/models/districtStateCovidData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-class StateTable extends StatelessWidget {
-  final List<StateCovidData> indiaData;
-  const StateTable({Key key, @required this.indiaData}) : super(key: key);
+class DistrictTable extends StatelessWidget {
+  final List<DistrictData> districtData;
+  const DistrictTable({Key key, @required this.districtData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,16 +25,13 @@ class StateTable extends StatelessWidget {
   }
 
   List<Widget> buildTable(BuildContext context) {
-    return List<Widget>.generate(indiaData.length, (index) {
-      if (indiaData[index].stateName == "Total") {
-        return Container();
-      }
-      return buildTableRow(context, index, indiaData[index]);
+    return List<Widget>.generate(districtData.length, (index) {
+      return buildTableRow(context, index, districtData[index]);
     });
   }
 
   Widget buildTableRow(
-      BuildContext context, int index, StateCovidData stateData) {
+      BuildContext context, int index, DistrictData districtData) {
     int alpha = 20;
     if (index % 2 == 0) {
       alpha = 30;
@@ -46,33 +41,28 @@ class StateTable extends StatelessWidget {
         padding: EdgeInsets.all(1.5),
         child: Material(
           type: MaterialType.transparency,
-          child: OpenContainer(
-            closedColor: Colors.black,
-            openColor: Colors.black,
-            transitionDuration: Duration(milliseconds: 500),
-            transitionType: ContainerTransitionType.fade,
-            tappable: true,
-            openBuilder: (context, action) =>
-                StateWiseData(stateData: stateData),
-            closedBuilder: (context, action) => Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 16,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      right: 1,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.white.withAlpha(alpha),
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                flex: 16,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    right: 1,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white.withAlpha(alpha),
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Hero(
+                      flightShuttleBuilder: flightShuttleBuilder,
+                      tag: districtData.district.toString(),
                       child: Material(
                         type: MaterialType.transparency,
                         child: Text(
-                          stateData.stateName,
+                          districtData.district,
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -83,116 +73,104 @@ class StateTable extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 10,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      right: 1,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.white.withAlpha(alpha),
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        Helper.formatNumber(stateData.totalConfirmed),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: Colors.blueAccent,
-                        ),
+              ),
+              Expanded(
+                flex: 10,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    right: 1,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white.withAlpha(alpha),
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      Helper.formatNumber(districtData.confirmed),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Colors.blueAccent,
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 10,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      right: 1,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.white.withAlpha(alpha),
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        Helper.formatNumber(stateData.totalActive),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: Colors.amberAccent[700],
-                        ),
+              ),
+              Expanded(
+                flex: 10,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    right: 1,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white.withAlpha(alpha),
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      Helper.formatNumber(districtData.active),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Colors.amberAccent[700],
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 10,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      right: 1,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.white.withAlpha(alpha),
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        Helper.formatNumber(stateData.totalRecovered),
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: Colors.greenAccent[700],
-                        ),
+              ),
+              Expanded(
+                flex: 10,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    right: 1,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white.withAlpha(alpha),
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      Helper.formatNumber(districtData.recovered),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Colors.greenAccent[700],
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  flex: 10,
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      right: 1,
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.white.withAlpha(alpha),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            Helper.formatNumber(stateData.totalDeaths),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: Colors.redAccent[700],
-                            ),
-                          ),
-                        ),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 15,
-                              color: Colors.white.withAlpha(55),
-                            )),
-                      ],
+              ),
+              Expanded(
+                flex: 10,
+                child: Container(
+                  margin: EdgeInsets.only(
+                    right: 1,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white.withAlpha(alpha),
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      Helper.formatNumber(districtData.deceased),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Colors.redAccent[700],
+                      ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -208,7 +186,7 @@ class StateTable extends StatelessWidget {
             Expanded(
               flex: 16,
               child: Tooltip(
-                message: "State",
+                message: "District",
                 child: Container(
                   margin: EdgeInsets.only(right: 1),
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
@@ -219,7 +197,7 @@ class StateTable extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "State/UT",
+                      "District",
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
