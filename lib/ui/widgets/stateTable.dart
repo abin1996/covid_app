@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:covid_app/helper.dart';
 import 'package:covid_app/models/stateCovidData.dart';
 import 'package:covid_app/ui/pages/indiaStatewise.dart';
@@ -28,7 +27,7 @@ class StateTable extends StatelessWidget {
 
   List<Widget> buildTable(BuildContext context) {
     return List<Widget>.generate(indiaData.length, (index) {
-      if (indiaData[index].stateName == "Total") {
+      if (indiaData[index].stateName == "Total" ) {
         return Container();
       }
       return buildTableRow(context, index, indiaData[index]);
@@ -46,15 +45,17 @@ class StateTable extends StatelessWidget {
         padding: EdgeInsets.all(1.5),
         child: Material(
           type: MaterialType.transparency,
-          child: OpenContainer(
-            closedColor: Colors.black,
-            openColor: Colors.black,
-            transitionDuration: Duration(milliseconds: 500),
-            transitionType: ContainerTransitionType.fade,
-            tappable: true,
-            openBuilder: (context, action) =>
-                StateWiseData(stateData: stateData),
-            closedBuilder: (context, action) => Row(
+          child: InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    CupertinoPageRoute(
+                       builder: (context) => StateWiseData(stateData: stateData)),
+            );
+              },
+            borderRadius: BorderRadius.circular(4),
+            splashColor: Colors.blueAccent.withOpacity(0.3),
+            highlightColor: Colors.blueAccent.withOpacity(0.15),
+            child: Row(
               children: <Widget>[
                 Expanded(
                   flex: 16,
@@ -181,12 +182,14 @@ class StateTable extends StatelessWidget {
                           ),
                         ),
                         Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 15,
-                              color: Colors.white.withAlpha(55),
-                            )),
+                          alignment: Alignment.centerRight,
+                          
+                          child: Icon(
+                            Icons.arrow_forward_ios,
+                            size: 15,
+                            color: Colors.white.withAlpha(55),
+                            )
+                        ),
                       ],
                     ),
                   ),
