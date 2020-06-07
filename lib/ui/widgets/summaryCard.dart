@@ -33,7 +33,7 @@ class SummaryCard extends StatelessWidget {
     }
 
     return Container(
-      height: 150,
+      height: 200,
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: cardColor.withAlpha(50),
@@ -79,7 +79,7 @@ class SummaryCard extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 4,
+              height: 20,
             ),
             AutoSizeText(
               Helper.formatNumber(totalValue),
@@ -88,7 +88,7 @@ class SummaryCard extends StatelessWidget {
               maxLines: 1,
             ),
             SizedBox(
-              height: 4,
+              height: 40,
             ),
             showChart ? Expanded(child: buildChart()) : Container()
           ],
@@ -120,11 +120,16 @@ class SummaryCard extends StatelessWidget {
     List<Color> gradientColors = [cardColor.withAlpha(200)];
     return LineChartData(
       lineTouchData: LineTouchData(
-        enabled: false,
-      ),
+          enabled: true,
+          handleBuiltInTouches: true,
+          touchTooltipData: LineTouchTooltipData(
+              fitInsideHorizontally: true,
+              tooltipBgColor: cardColor.withAlpha(50))),
       gridData: FlGridData(show: false),
       titlesData: FlTitlesData(show: false),
       borderData: FlBorderData(show: false),
+      clipData:
+          FlClipData(top: false, bottom: false, left: false, right: false),
       minX: 0,
       minY: 0,
       maxY: singleDayData[CHART_LENGTH - 1].value.toDouble(),
@@ -133,6 +138,7 @@ class SummaryCard extends StatelessWidget {
         LineChartBarData(
           spots: buildFlSpots(singleDayData),
           isCurved: true,
+          curveSmoothness: 0.25,
           colors: gradientColors,
           dotData: FlDotData(
             show: false,
@@ -175,28 +181,28 @@ class SummaryCard extends StatelessWidget {
     List<SingleDayData> singleDayDataList = List();
     List<FlSpot> flSpots = List();
     if (this.name == "Confirmed") {
-      for (int i = 0; i < CHART_LENGTH*2; i=i+2) {
+      for (int i = 0; i < CHART_LENGTH * 2; i = i + 2) {
         singleDayDataList.add(SingleDayData(
             date: dailyData[i].date, value: dailyData[i].totalConfirmed));
         flSpots
             .add(FlSpot(i.toDouble(), dailyData[i].totalConfirmed.toDouble()));
       }
     } else if (this.name == "Active") {
-      for (int i = 0; i < CHART_LENGTH*2; i=i+2) {
+      for (int i = 0; i < CHART_LENGTH * 2; i = i + 2) {
         singleDayDataList.add(SingleDayData(
             date: dailyData[i].date, value: dailyData[i].totalActive));
         flSpots
             .add(FlSpot(i.toDouble(), dailyData[i].totalConfirmed.toDouble()));
       }
     } else if (this.name == "Recovered") {
-      for (int i = 0; i < CHART_LENGTH*2; i=i+2) {
+      for (int i = 0; i < CHART_LENGTH * 2; i = i + 2) {
         singleDayDataList.add(SingleDayData(
             date: dailyData[i].date, value: dailyData[i].totalRecovered));
         flSpots
             .add(FlSpot(i.toDouble(), dailyData[i].totalConfirmed.toDouble()));
       }
     } else if (this.name == "Deaths") {
-      for (int i = 0; i < CHART_LENGTH*2; i=i+2) {
+      for (int i = 0; i < CHART_LENGTH * 2; i = i + 2) {
         singleDayDataList.add(SingleDayData(
             date: dailyData[i].date, value: dailyData[i].totalDeaths));
         flSpots
