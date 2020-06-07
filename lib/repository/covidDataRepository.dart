@@ -9,8 +9,12 @@ class CovidDataRepository {
   CovidDataRepository({@required this.covidDataApiClient})
       : assert(covidDataApiClient != null);
 
-  Future<List<StateCovidData>> getStateCovidData() async {
+  Future<CombinedIndiaData> getStateCovidData() async {
     return covidDataApiClient.fetchStateCovidData();
+  }
+
+  Future<List<StateDailyData>> getStateDailyCovidData() async {
+    return covidDataApiClient.fetchStateDailyCovidData();
   }
 
   Future<BahrainCovidData> getBahrainCovidData() async {

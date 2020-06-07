@@ -58,7 +58,7 @@ class CountriesTable extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  flex: 16,
+                  flex: 12,
                   child: Container(
                     margin: EdgeInsets.only(
                       right: 1,
@@ -199,7 +199,7 @@ class CountriesTable extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(
-              flex: 16,
+              flex: 12,
               child: Tooltip(
                 message: "Country",
                 child: Container(

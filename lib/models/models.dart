@@ -3,3 +3,7 @@ export 'bahrainCovidData.dart';
 export 'globalCovidData.dart';
 export 'countriesCovidData.dart';
 export 'districtStateCovidData.dart';
+export 'singleDayData.dart';
+export 'dailyData.dart';
+export 'combinedIndiaData.dart';
+export 'stateDailyData.dart';

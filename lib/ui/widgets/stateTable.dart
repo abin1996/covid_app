@@ -1,4 +1,5 @@
 import 'package:covid_app/helper.dart';
+import 'package:covid_app/models/models.dart';
 import 'package:covid_app/models/stateCovidData.dart';
 import 'package:covid_app/ui/pages/indiaStatewise.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,8 @@ import 'package:flutter/cupertino.dart';
 
 class StateTable extends StatelessWidget {
   final List<StateCovidData> indiaData;
-  const StateTable({Key key, @required this.indiaData}) : super(key: key);
+  final List<StateDailyData> stateDailyCovidData;
+  const StateTable({Key key, @required this.indiaData, @required this.stateDailyCovidData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +29,7 @@ class StateTable extends StatelessWidget {
 
   List<Widget> buildTable(BuildContext context) {
     return List<Widget>.generate(indiaData.length, (index) {
-      if (indiaData[index].stateName == "Total" ) {
+      if (indiaData[index].stateName == "Total") {
         return Container();
       }
       return buildTableRow(context, index, indiaData[index]);
@@ -46,12 +48,20 @@ class StateTable extends StatelessWidget {
         child: Material(
           type: MaterialType.transparency,
           child: InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(
-                       builder: (context) => StateWiseData(stateData: stateData)),
-            );
-              },
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => StateWiseData(stateData: stateData,
+                    stateDailyCovidData: stateDailyCovidData.firstWhere((element) {
+                      if(stateData.stateCode == element.stateCode){
+                        return true;
+                      }else{
+                        return false;
+                      }
+                    }),)),
+              );
+            },
             borderRadius: BorderRadius.circular(4),
             splashColor: Colors.blueAccent.withOpacity(0.3),
             highlightColor: Colors.blueAccent.withOpacity(0.15),
@@ -182,14 +192,12 @@ class StateTable extends StatelessWidget {
                           ),
                         ),
                         Align(
-                          alignment: Alignment.centerRight,
-                          
-                          child: Icon(
-                            Icons.arrow_forward_ios,
-                            size: 15,
-                            color: Colors.white.withAlpha(55),
-                            )
-                        ),
+                            alignment: Alignment.centerRight,
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 15,
+                              color: Colors.white.withAlpha(55),
+                            )),
                       ],
                     ),
                   ),

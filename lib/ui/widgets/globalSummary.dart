@@ -1,7 +1,9 @@
 import 'package:covid_app/models/globalCovidData.dart';
 import 'package:covid_app/ui/widgets/summaryCard.dart';
+import 'package:covid_app/ui/widgets/summaryCardGlobal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
 class GlobalSummary extends StatelessWidget {
   final GlobalCovidData globalData;
   const GlobalSummary({Key key, @required this.globalData}) : super(key: key);
@@ -17,10 +19,10 @@ class GlobalSummary extends StatelessWidget {
           SlideAnimation(
             horizontalOffset: 20,
             duration: Duration(milliseconds: 300),
-                      child: Row(
+            child: Row(
               children: <Widget>[
                 Expanded(
-                  child: SummaryCard(
+                  child: SummaryCardGlobal(
                     cardColor: Colors.blueAccent,
                     totalValue: globalData.totalConfirmed,
                     changeValue: null,
@@ -28,7 +30,7 @@ class GlobalSummary extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: SummaryCard(
+                  child: SummaryCardGlobal(
                     cardColor: Colors.amberAccent[700],
                     totalValue: globalData.totalActive,
                     changeValue: null,
@@ -41,10 +43,10 @@ class GlobalSummary extends StatelessWidget {
           SlideAnimation(
             duration: Duration(milliseconds: 400),
             horizontalOffset: 30,
-                      child: Row(
+            child: Row(
               children: <Widget>[
                 Expanded(
-                  child: SummaryCard(
+                  child: SummaryCardGlobal(
                     cardColor: Colors.green,
                     totalValue: globalData.totalRecovered,
                     changeValue: null,
@@ -52,7 +54,7 @@ class GlobalSummary extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: SummaryCard(
+                  child: SummaryCardGlobal(
                     cardColor: Colors.redAccent,
                     totalValue: globalData.totalDeaths,
                     changeValue: null,

@@ -1,10 +1,14 @@
+import 'package:covid_app/models/models.dart';
 import 'package:covid_app/models/stateCovidData.dart';
 import 'package:covid_app/ui/widgets/summaryCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+
 class IndiaSummary extends StatelessWidget {
   final StateCovidData totalIndiaData;
-  const IndiaSummary({Key key, @required this.totalIndiaData}) : super(key: key);
+  final List<DailyData> dailyCovidData;
+  const IndiaSummary({Key key, @required this.totalIndiaData, @required this.dailyCovidData})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,6 +29,8 @@ class IndiaSummary extends StatelessWidget {
                     totalValue: totalIndiaData.totalConfirmed,
                     changeValue: totalIndiaData.deltaConfirmed,
                     name: "Confirmed",
+                    showChart: true,
+                    dailyCovidData: dailyCovidData,
                   ),
                 ),
                 Expanded(
@@ -33,6 +39,8 @@ class IndiaSummary extends StatelessWidget {
                     totalValue: totalIndiaData.totalActive,
                     changeValue: totalIndiaData.deltaActive,
                     name: "Active",
+                    showChart: true,
+                    dailyCovidData: dailyCovidData,
                   ),
                 ),
               ],
@@ -41,7 +49,7 @@ class IndiaSummary extends StatelessWidget {
           SlideAnimation(
             horizontalOffset: 30,
             duration: Duration(milliseconds: 400),
-                      child: Row(
+            child: Row(
               children: <Widget>[
                 Expanded(
                   child: SummaryCard(
@@ -49,14 +57,18 @@ class IndiaSummary extends StatelessWidget {
                     totalValue: totalIndiaData.totalRecovered,
                     changeValue: totalIndiaData.deltaRecovered,
                     name: "Recovered",
-                    ),
+                    showChart: true,
+                    dailyCovidData: dailyCovidData,
                   ),
+                ),
                 Expanded(
                   child: SummaryCard(
                     cardColor: Colors.redAccent,
                     totalValue: totalIndiaData.totalDeaths,
                     changeValue: totalIndiaData.deltaDeaths,
                     name: "Deaths",
+                    showChart: true,
+                    dailyCovidData: dailyCovidData,
                   ),
                 ),
               ],

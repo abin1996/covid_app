@@ -1,4 +1,5 @@
 import 'package:covid_app/bloc/blocs.dart';
+import 'package:covid_app/models/models.dart';
 import 'package:covid_app/models/stateCovidData.dart';
 import 'package:covid_app/ui/widgets/indiaSummary.dart';
 import 'package:covid_app/ui/widgets/lastUpdated.dart';
@@ -53,6 +54,9 @@ class _IndiaState extends State<India> {
         }
         if (state is CovidIndiaLoaded) {
           final List<StateCovidData> stateCovidData = state.stateCovidData;
+          final List<DailyData> dailyCovidData = state.dailyCovidData;
+          final List<StateDailyData> stateDailyCovidData =
+              state.stateDailyCovidData;
           StateCovidData totalIndiaData = new StateCovidData();
           for (var i = 0; i < stateCovidData.length; i++) {
             if (stateCovidData[i].stateName == "Total") {
@@ -90,13 +94,17 @@ class _IndiaState extends State<India> {
                       FadeInAnimation(
                         child: IndiaSummary(
                           totalIndiaData: totalIndiaData,
+                          dailyCovidData: dailyCovidData,
                         ),
                       ),
                       SlideAnimation(
                           verticalOffset: 50.0,
                           duration: Duration(milliseconds: 350),
                           child: FadeInAnimation(
-                              child: StateTable(indiaData: stateCovidData))),
+                              child: StateTable(
+                            indiaData: stateCovidData,
+                            stateDailyCovidData: stateDailyCovidData,
+                          ))),
                     ],
                   ),
                 ),
